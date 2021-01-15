@@ -51,21 +51,18 @@
       "if": {
         "field": "type",
         "in": [
-          "AKS Engine",
-          "Microsoft.Kubernetes/connectedClusters",
           "Microsoft.ContainerService/managedClusters"
         ]
       },
       "then": {
         "effect": "[parameters('effect')]",
         "details": {
-          "constraintTemplate": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-volume-types/template.yaml",
-          "constraint": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-volume-types/constraint.yaml",
+          "constraintTemplate": "https://store.policy.core.windows.net/kubernetes/allowed-volume-types/v1/template.yaml",
+          "constraint": "https://store.policy.core.windows.net/kubernetes/allowed-volume-types/v1/constraint.yaml",
           "excludedNamespaces": "[parameters('excludedNamespaces')]",
           "namespaces": "[parameters('namespaces')]",
           "values": {
-            "volumes": "[parameters('allowedVolumeTypes')]",
-            "excludedNamespaces": "[parameters('excludedNamespaces')]"
+            "volumes": "[parameters('allowedVolumeTypes')]"
           }
         }
       }

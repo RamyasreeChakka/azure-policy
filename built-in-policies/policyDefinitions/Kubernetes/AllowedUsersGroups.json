@@ -227,16 +227,14 @@
       "if": {
         "field": "type",
         "in": [
-          "AKS Engine",
-          "Microsoft.Kubernetes/connectedClusters",
           "Microsoft.ContainerService/managedClusters"
         ]
       },
       "then": {
         "effect": "[parameters('effect')]",
         "details": {
-          "constraintTemplate": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-users-groups/template.yaml",
-          "constraint": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-users-groups/constraint.yaml",
+          "constraintTemplate": "https://store.policy.core.windows.net/kubernetes/allowed-users-groups/v1/template.yaml",
+          "constraint": "https://store.policy.core.windows.net/kubernetes/allowed-users-groups/v1/constraint.yaml",
           "excludedNamespaces": "[parameters('excludedNamespaces')]",
           "namespaces": "[parameters('namespaces')]",
           "values": {
@@ -255,8 +253,7 @@
             "fsGroup": {
               "rule": "[parameters('fsGroupRule')]",
               "ranges": "[parameters('fsGroupRanges').ranges]"
-            },
-            "excludedNamespaces": "[parameters('excludedNamespaces')]"
+            }
           }
         }
       }

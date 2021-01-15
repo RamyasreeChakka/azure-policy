@@ -57,22 +57,19 @@
       "if": {
         "field": "type",
         "in": [
-          "AKS Engine",
-          "Microsoft.Kubernetes/connectedClusters",
           "Microsoft.ContainerService/managedClusters"
         ]
       },
       "then": {
         "effect": "[parameters('effect')]",
         "details": {
-          "constraintTemplate": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/container-resource-limits/template.yaml",
-          "constraint": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/container-resource-limits/constraint.yaml",
+          "constraintTemplate": "https://store.policy.core.windows.net/kubernetes/container-resource-limits/v1/template.yaml",
+          "constraint": "https://store.policy.core.windows.net/kubernetes/container-resource-limits/v1/constraint.yaml",
           "excludedNamespaces": "[parameters('excludedNamespaces')]",
           "namespaces": "[parameters('namespaces')]",
           "values": {
             "cpuLimit": "[parameters('cpuLimit')]",
-            "memoryLimit": "[parameters('memoryLimit')]",
-            "excludedNamespaces": "[parameters('excludedNamespaces')]"
+            "memoryLimit": "[parameters('memoryLimit')]"
           }
         }
       }

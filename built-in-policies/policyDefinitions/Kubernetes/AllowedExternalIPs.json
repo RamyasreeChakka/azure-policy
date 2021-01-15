@@ -1,12 +1,13 @@
 {
   "properties": {
-    "displayName": "Kubernetes cluster containers should only use allowed ProcMountType",
+    "displayName": "Kubernetes cluster services should only use allowed external IPs",
     "policyType": "BuiltIn",
     "mode": "Microsoft.Kubernetes.Data",
-    "description": "This policy ensures containers only use allowed ProcMountType in a Kubernetes cluster. This policy is generally available for Kubernetes Service (AKS), and preview for AKS Engine and Azure Arc enabled Kubernetes. For instructions on using this policy, visit https://aka.ms/kubepolicydoc.",
+    "description": "Use allowed external IPs to avoid the potential attack(CVE-2020-8554) in a Kubernetes cluster. For more information, see https://aka.ms/kubepolicydoc.",
     "metadata": {
-      "version": "3.0.1",
-      "category": "Kubernetes"
+      "version": "1.0.0-preview",
+      "category": "Kubernetes",
+      "preview": true
     },
     "parameters": {
       "effect": {
@@ -26,7 +27,7 @@
         "type": "Array",
         "metadata": {
           "displayName": "Namespace exclusions",
-          "description": "List of Kubernetes namespaces to exclude from policy evaluation."
+          "description": "List of Kubernetes namespaces to exclude from policy evaluation. Providing a value for this parameter is optional."
         },
         "defaultValue": ["kube-system", "gatekeeper-system", "azure-arc"]
       },
@@ -38,42 +39,36 @@
         },
         "defaultValue": []
       },
-      "procMountType": {
-        "type": "String",
+      "allowedExternalIPs": {
+        "type": "Array",
         "metadata": {
-          "displayName": "ProcMountType",
-          "description": "The ProcMountType that containers are allowed to use in the cluster."
+          "displayName": "Allowed External IPs",
+          "description": "List of External IPs that services are allowed to use. Empty array means all external IPs are disallowed."
         },
-        "allowedValues": [
-          "Unmasked",
-          "Default"
-        ],
-        "defaultValue": "Default"
+        "defaultValue": []
       }
     },
     "policyRule": {
       "if": {
         "field": "type",
         "in": [
-          "AKS Engine",
-          "Microsoft.Kubernetes/connectedClusters"
+          "Microsoft.ContainerService/managedClusters"
         ]
       },
       "then": {
         "effect": "[parameters('effect')]",
         "details": {
-          "constraintTemplate": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-proc-mount-types/template.yaml",
-          "constraint": "https://raw.githubusercontent.com/Azure/azure-policy/master/built-in-references/Kubernetes/allowed-proc-mount-types/constraint.yaml",
+          "constraintTemplate": "https://store.policy.core.windows.net/kubernetes/allowed-external-ips/v1/template.yaml",
+          "constraint": "https://store.policy.core.windows.net/kubernetes/allowed-external-ips/v1/constraint.yaml",
           "excludedNamespaces": "[parameters('excludedNamespaces')]",
           "namespaces": "[parameters('namespaces')]",
           "values": {
-            "procMount": "[parameters('procMountType')]",
-            "excludedNamespaces": "[parameters('excludedNamespaces')]"
+            "allowedExternalIPs": "[parameters('allowedExternalIPs')]"
           }
         }
       }
     }
   },
-  "id": "/providers/Microsoft.Authorization/policyDefinitions/f85eb0dd-92ee-40e9-8a76-db25a507d6d3",
-  "name": "f85eb0dd-92ee-40e9-8a76-db25a507d6d3"
+  "id": "/providers/Microsoft.Authorization/policyDefinitions/d46c275d-1680-448d-b2ec-e495a3b6cc89",
+  "name": "d46c275d-1680-448d-b2ec-e495a3b6cc89"
 }
